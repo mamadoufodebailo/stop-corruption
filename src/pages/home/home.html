@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar color="danger">
+    <ion-title>Acceuil</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-card class="boite" *ngFor="let info of infos?.informations">
+      <img class="clickable" src="{{info.photo}}" (click)="voirPlus(info)">
+      <ion-card-content>
+        <ion-card-title>{{info.titre}}</ion-card-title>
+        <button ion-button="" end="" (click)="voirPlus(info)">Voir plus</button>
+      </ion-card-content>
+    </ion-card>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-list>
+
+  <p> Pour une bonne gouvernance, <span style="color: red"> je m'engage... </span> </p>
+</ion-content>
+
+<ion-footer>
+  <ion-navbar color="danger"></ion-navbar>
+</ion-footer>
+

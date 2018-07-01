@@ -1,0 +1,39 @@
+<!--
+  Generated template for the ActualitePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="danger">
+    <ion-title>Actualite</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-card *ngFor="let actu of actus?.actualites">
+      <ion-card-content>
+        <ion-card-title>{{actu.titre}}</ion-card-title>
+        <p> <strong>publié:</strong> {{actu.datePublie}} </p>
+        <img src="{{actu.photo}}" (click)="voirPlus(actu)">
+        <button ion-button="" end="" (click)="voirPlus(actu)">Voir Plus</button>
+      </ion-card-content>
+    </ion-card>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-list>
+
+
+  <p> Pour une bonne gouvernance, <span style="color: red"> je m'engage... </span> </p>
+</ion-content>
+
+<ion-footer>
+  <ion-navbar color="danger"></ion-navbar>
+</ion-footer>

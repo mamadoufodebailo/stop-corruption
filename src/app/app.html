@@ -1,0 +1,20 @@
+<ion-menu [content]="content">
+    <ion-header>
+        <ion-toolbar color="dark">
+            <ion-title>Menu</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content color="dark">
+        <ion-list>
+            <button icon-only ion-item menuClose *ngFor="let m of menus" (click)="openPage(m)">
+                <ion-icon name="home" *ngIf="m.titre == 'Acceuil'"></ion-icon>
+                <ion-icon name="information-circle" *ngIf="m.titre == 'Témoignage'"></ion-icon>
+                <ion-icon name="chatboxes" *ngIf="m.titre == 'Actualite'"></ion-icon>
+                <ion-icon name="thumbs-up" *ngIf="m.titre == 'Dénoncer'"></ion-icon>
+                <ion-icon name="contacts" *ngIf="m.titre == 'Partenaire'"></ion-icon>
+                {{m.titre|uppercase}}
+            </button>
+        </ion-list>
+    </ion-content>
+</ion-menu>
+<ion-nav #content [root]="rootPage"></ion-nav>
