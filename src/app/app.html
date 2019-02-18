@@ -1,17 +1,18 @@
 <ion-menu [content]="content">
     <ion-header>
-        <ion-toolbar color="dark">
+        <ion-toolbar color="danger">
             <ion-title>Menu</ion-title>
         </ion-toolbar>
     </ion-header>
-    <ion-content color="dark">
+    <ion-content color="danger">
         <ion-list>
             <button icon-only ion-item menuClose *ngFor="let m of menus" (click)="openPage(m)">
-                <ion-icon name="home" *ngIf="m.titre == 'Acceuil'"></ion-icon>
-                <ion-icon name="information-circle" *ngIf="m.titre == 'Témoignage'"></ion-icon>
-                <ion-icon name="chatboxes" *ngIf="m.titre == 'Actualite'"></ion-icon>
-                <ion-icon name="thumbs-up" *ngIf="m.titre == 'Dénoncer'"></ion-icon>
-                <ion-icon name="contacts" *ngIf="m.titre == 'Partenaire'"></ion-icon>
+                <ion-icon name="radio" *ngIf="m.titre == 'Informations'"></ion-icon>
+                <ion-icon name="information-circle" *ngIf="m.titre == 'Témoignages'"></ion-icon>
+                <ion-icon name="chatboxes" *ngIf="m.titre == 'Actualites'"></ion-icon>
+                <ion-icon name="thumbs-up" *ngIf="m.titre == 'Signaler un acte'"></ion-icon>
+                <ion-icon name="contacts" *ngIf="m.titre == 'Partenaires'"></ion-icon>
+                <ion-icon name="contact" *ngIf="m.titre == 'Contact'"></ion-icon>
                 {{m.titre|uppercase}}
             </button>
         </ion-list>

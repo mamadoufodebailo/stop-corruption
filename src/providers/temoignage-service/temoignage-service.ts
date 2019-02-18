@@ -16,6 +16,7 @@ export class TemoignageServiceProvider {
 
   listeTemoignage(page,taille){
     return this.http.get("http://senacte.com/stop-corruption/api/temoignage.php?page="+page+"&taille="+taille);
+    //return this.http.get("http://localhost/stop-corruption/api/temoignage.php?page="+page+"&taille="+taille);
   }
 
 }

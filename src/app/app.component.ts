@@ -9,6 +9,8 @@ import { InformationPage } from '../pages/information/information';
 import { DenonciationPage } from '../pages/denonciation/denonciation';
 import { ActualitePage } from '../pages/actualite/actualite';
 import { PartenairePage } from '../pages/partenaire/partenaire';
+import {ContactPage} from "../pages/contact/contact";
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -16,11 +18,12 @@ export class MyApp {
   rootPage:any = PopoverPage;
 
   menus = [
-    {titre: "Acceuil",Component: HomePage},
-    {titre: "Dénoncer",Component: DenonciationPage},
-    {titre: "Témoignage",Component: InformationPage},
-    {titre: "Actualite",Component: ActualitePage},
-    {titre: "Partenaire",Component: PartenairePage}
+    {titre: "Informations",Component: HomePage},
+    {titre: "Signaler un acte",Component: DenonciationPage},
+    {titre: "Témoignages",Component: InformationPage},
+    {titre: "Actualites",Component: ActualitePage},
+    {titre: "Partenaires",Component: PartenairePage},
+    {titre: "Contact",Component: ContactPage}
   ]
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {

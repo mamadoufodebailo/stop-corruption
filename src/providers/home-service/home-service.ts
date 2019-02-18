@@ -16,6 +16,7 @@ export class HomeServiceProvider {
 
   listeInformation(page,taille){
     return this.http.get("http://senacte.com/stop-corruption/api/information.php?page="+page+"&taille="+taille);
+    //return this.http.get("http://localhost/stop-corruption/api/information.php?page="+page+"&taille="+taille);
   }
 
 }

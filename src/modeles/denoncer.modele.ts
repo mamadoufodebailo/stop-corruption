@@ -1,14 +1,12 @@
-export class Denonce {
-    public categorie?:string;
-    public principe?:string;
-    public montant?:string;
-    public objet?:string;
-    public message?:string;
-    public dateDenonce?:number;
-    public region?:string;
-    public departement?:string;
-    public entite?:string;
-    public duree?:string;
-    public periode?:string;
-    public email?:string;
+export class DenonceModel {
+    acte?:string;
+    secteur?:string;
+    message?:string;
+    region?:string;
+    departement?:string;
+    duree?:string;
+    periode?:string;
+    email?:string;
+    photo?:any;
+    fichier?:any;
 }

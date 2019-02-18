@@ -16,6 +16,7 @@ export class PartenaireServiceProvider {
 
   listePartenaire(){
     return this.http.get("http://senacte.com/stop-corruption/api/partenaire.php");
+    //return this.http.get("http://localhost/stop-corruption/api/partenaire.php");
   }
 
 }

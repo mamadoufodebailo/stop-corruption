@@ -17,7 +17,7 @@
 
 <ion-content padding>
   <ion-slides *ngIf="photos?.partenaires && photos?.partenaires.length" zoom="true" speed="3000" autoplay="2000" direction="horizontal" effect="flip" loop="true" pager>
-    <ion-slide *ngFor="let photo of photos?.partenaires">
+    <ion-slide *ngFor="let photo of photos.partenaires">
       <img src="{{photo.image}}">
       <h2>{{photo.nom}}</h2>
     </ion-slide>
@@ -26,5 +26,13 @@
 </ion-content>
 
 <ion-footer>
-  <ion-navbar color="danger"></ion-navbar>
+  <ion-navbar color="danger">
+    <button icon-start="" align-self-center="" ion-button="" color="secondary" (click)="goToHome()">
+      <ion-icon name="home"></ion-icon> Acceuil
+    </button>
+    <p>
+      © Copyright <strong>Stop Corruption</strong>. Tous Droits Réserves
+    </p>
+    <p>Conception: digitalafrik.com-MOUBINA-ATLANTIC</p>
+  </ion-navbar>
 </ion-footer>

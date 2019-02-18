@@ -12,7 +12,7 @@ import { InformationPage } from '../pages/information/information';
 import { PopoverPage } from '../pages/popover/popover';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {IonicStorageModule} from '@ionic/storage'
+import {IonicStorageModule} from '@ionic/storage';
 import { DenoncerServiceProvider } from '../providers/denoncer-service/denoncer-service';
 import { PartenairePage } from '../pages/partenaire/partenaire';
 
@@ -28,6 +28,12 @@ import {DetailActualitePage} from "../pages/detail-actualite/detail-actualite";
 import {DetailHomePage} from "../pages/detail-home/detail-home";
 import { TemoignageServiceProvider } from '../providers/temoignage-service/temoignage-service';
 import {DetailInformationPage} from "../pages/detail-information/detail-information";
+import {ContactPage} from "../pages/contact/contact";
+import { ContactServiceProvider } from '../providers/contact-service/contact-service';
+import {Base64} from "@ionic-native/base64";
+import {FilePath} from "@ionic-native/file-path";
+import {SuiteDenonciationPage} from "../pages/suite-denonciation/suite-denonciation";
+import { PopoverServiceProvider } from '../providers/popover-service/popover-service';
 
 @NgModule({
   declarations: [
@@ -40,18 +46,17 @@ import {DetailInformationPage} from "../pages/detail-information/detail-informat
     PartenairePage,
     DetailActualitePage,
     DetailHomePage,
-    DetailInformationPage
+    DetailInformationPage,
+    ContactPage,
+    SuiteDenonciationPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicStorageModule.forRoot({
-      name : "__corruptDB",
-      driverOrder : ["indexeddb","sqlite","websql"]
-    }),
     ChartsModule
   ],
   bootstrap: [IonicApp],
@@ -65,7 +70,9 @@ import {DetailInformationPage} from "../pages/detail-information/detail-informat
     PartenairePage,
     DetailActualitePage,
     DetailHomePage,
-    DetailInformationPage
+    DetailInformationPage,
+    ContactPage,
+    SuiteDenonciationPage
   ],
   providers: [
     StatusBar,
@@ -76,10 +83,14 @@ import {DetailInformationPage} from "../pages/detail-information/detail-informat
     Transfer,
     File,
     FileChooser,
+    FilePath,
     PartenaireServiceProvider,
     HomeServiceProvider,
     ActualiteServiceProvider,
-    TemoignageServiceProvider
+    TemoignageServiceProvider,
+    ContactServiceProvider,
+    Base64,
+    PopoverServiceProvider
   ]
 })
 export class AppModule {}

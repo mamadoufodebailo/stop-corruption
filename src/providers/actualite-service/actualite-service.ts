@@ -16,5 +16,6 @@ export class ActualiteServiceProvider {
 
   listeActualite(page,taille){
     return this.http.get("http://senacte.com/stop-corruption/api/actualite.php?page="+page+"&taille="+taille);
+    //return this.http.get("http://localhost/stop-corruption/api/actualite.php?page="+page+"&taille="+taille);
   }
 }

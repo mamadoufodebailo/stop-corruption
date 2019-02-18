@@ -5,20 +5,40 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar color="danger"></ion-navbar>
+  <ion-navbar color="danger">
+    <ion-title>Acceuil</ion-title>
+  </ion-navbar>
 </ion-header>
-
 
 <ion-content padding>
 
-  <ion-thumbnail>
-    <img src="assets/imgs/logo.png">
-  </ion-thumbnail>
+  <ion-list>
+    <ion-slides *ngIf="photos?.slides && photos?.slides.length" zoom="true" speed="3000" autoplay="2000" direction="horizontal" effect="flip" loop="true" pager>
+      <ion-slide *ngFor="let photo of photos?.slides">
+        <img src="{{photo.photo}}">
+      </ion-slide>
+    </ion-slides>
+    <div *ngFor="let menu of menus">
+      <button *ngIf="menu.name == 'Signaler un acte';else noElement" color="danger" block ion-button="" round (click)="goToPage(menu)">
+        {{menu.name}}
+      </button>
+      <ng-template #noElement>
+        <button block ion-button="" round (click)="goToPage(menu)">
+          {{menu.name}}
+        </button>
+      </ng-template>
+    </div>
+  </ion-list>
 
   <h4>{{slogan}}</h4>
 
 </ion-content>
 
 <ion-footer>
-    <ion-navbar color="danger"></ion-navbar>
+  <ion-navbar color="danger">
+    <p>
+      © Copyright <strong>Stop Corruption</strong>. Tous Droits Réserves
+    </p>
+    <p>Conception: digitalafrik.com-MOUBINA-ATLANTIC</p>
+  </ion-navbar>
 </ion-footer>

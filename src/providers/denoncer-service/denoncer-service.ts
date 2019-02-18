@@ -31,7 +31,7 @@ export class DenoncerServiceProvider {
   }
 
   soumettreDenonce(data:any){
-    return this.http.post("http://senacte.com/stop-corruption/api/denonce.php",data,{headers:new HttpHeaders("Content-Type:application/json")});
+    return this.http.post("http://senacte.com/stop-corruption/api/denonce.php",data,
+      {headers:new HttpHeaders({"Content-Type" : "application/json"})});
   }
-
 }

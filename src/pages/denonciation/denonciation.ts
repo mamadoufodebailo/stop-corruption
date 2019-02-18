@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DenoncerServiceProvider } from '../../providers/denoncer-service/denoncer-service';
 import {Camera, CameraOptions} from "@ionic-native/camera";
 import {Transfer} from "@ionic-native/transfer";
-import {File, FileEntry} from "@ionic-native/file";
+import {File} from "@ionic-native/file";
 import {FileChooser} from "@ionic-native/file-chooser";
+import {DenonceModel} from "../../modeles/denoncer.modele";
+import {PopoverPage} from "../popover/popover";
 
 /**
  * Generated class for the DenonciationPage page.
@@ -20,40 +21,22 @@ import {FileChooser} from "@ionic-native/file-chooser";
   templateUrl: 'denonciation.html',
 })
 export class DenonciationPage {
-  fGroup: FormGroup;
+  denonce: DenonceModel = new DenonceModel();
+
   departements: any;
-  formulaire : FormData = new FormData();
   actes : any;
   regions : any;
   secteurs: any;
-  photo: string;
+  photos = [];
+  photo: any;
 
-    categorie: any;
-    message: any;
-    region: any;
-    departement:any;
-    periode:any;
-    duree:any;
-    email:any;
-    secteur:any;
+  path: any;
+  message: any;
+  resultat: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public fb:FormBuilder,public denonceService:DenoncerServiceProvider,public alert:AlertController
-              ,public camera:Camera,public transfer:Transfer,public file:File,public alertCtrl: AlertController,public loadCtrl:LoadingController,public fileChooser:FileChooser) {
-    this.fGroup = fb.group({categorie:['',Validators.required],
-      message:['',Validators.required],duree:['',''],
-      periode:['',''],email:['',''], region:['',Validators.required],
-      departement:['',Validators.required],secteur:['',Validators.required]});
-
-    this.categorie = this.fGroup.controls['categorie'];
-    this.message = this.fGroup.controls['message'];
-    this.region = this.fGroup.controls['region'];
-    this.departement = this.fGroup.controls['departement'];
-    this.periode = this.fGroup.controls['periode'];
-    this.duree = this.fGroup.controls['duree'];
-    this.email = this.fGroup.controls['email'];
-    this.secteur = this.fGroup.controls['secteur'];
-
-    this.initialiser();
+  constructor(public navCtrl: NavController, public navParams: NavParams,public denonceService:DenoncerServiceProvider,public alert:AlertController
+              ,public camera:Camera,public file:File,public alertCtrl: AlertController,public loading:LoadingController,
+              public fileChooser:FileChooser,public transfer: Transfer) {
   }
 
   ionViewDidLoad() {
@@ -75,15 +58,16 @@ export class DenonciationPage {
   }
 
   ngOnInit(){
-    this.fGroup.get("region").valueChanges.subscribe(data => {
-      this.denonceService.listeVilleParRegion(data).subscribe(data=>{
-        this.departements = data;
-        document.getElementById("ville").style.display = "block";
-      },error=>{
-        console.error(error);
-      });
-    })
 
+  }
+
+  onchange(region){
+    this.denonceService.listeVilleParRegion(region).subscribe(data=>{
+      this.departements = data;
+      document.getElementById("ville").style.display = "block";
+    },error=>{
+      console.error(error);
+    });
   }
 
   takeImage(){
@@ -123,8 +107,15 @@ export class DenonciationPage {
 
   choicePhoto(options){
     this.camera.getPicture(options).then(data=>{
-      this.photo = 'data:image/png;base64,'+data;
-      this.formulaire.append("photo",this.photo);
+      if (this.photos.length <= 4){
+        this.photos.push('data:image/png;base64,'+data);
+        this.photo = this.photos[this.photos.length - 1];
+        this.denonce.photo = this.photos;
+      }
+      else {
+        this.message = "Vous pouvez pas dépasser 4 éléments !";
+      }
+
     }).catch(error=>{
       console.error(error);
     });
@@ -132,54 +123,70 @@ export class DenonciationPage {
 
   takeFile(){
     this.fileChooser.open().then(uri=>{
-        this.uploadFile(uri);
+
+    }).catch(error=>{
+      this.message = "Le fichier n'est pas correctement charger";
     })
   }
 
-  /*private createFileName() {
-    var d = new Date(),
-      n = d.getTime(),
-      newFileName =  n + Math.floor(Math.random()) + ".pdf";
-    return newFileName;
-  }*/
+  selectPDF(){
+    this.fileChooser.open().then(uri =>
+      {(<any>window).FilePath.resolveNativePath(uri, (file) => {
 
-  readFile(file:any){
-    let reader = new FileReader();
-    reader.onloadend = () =>{
-      const imgBlod = new Blob([reader.result],{type:file.type});
-      this.formulaire.append('fichier',imgBlod,file.name);
-    }
-    reader.readAsArrayBuffer(file);
+        this.path = file;
+
+        let extension = this.path.substr(this.path.lastIndexOf('.') + 1);
+
+        if (extension == 'pdf'){
+
+          let loaderPdf = this.loading.create({
+            content: "Uploading PDF..."
+          });
+
+          loaderPdf.present();
+
+          this.readFile();
+
+          loaderPdf.dismiss();
+          }
+          else {
+          this.message = "Seul un fichier Pdf est requis !";
+        }
+        })
+
+      }).catch(e => this.message = 'Error - '+e);
   }
 
-  uploadFile(fileUri:any){
-    let loading = this.loadCtrl.create({
-      content: "Téléchargement de fichier..."
+  readFile(){
+    (<any>window).resolveLocalFileSystemURL(this.path, (res) => {
+      res.file((resFile) => {
+        var reader = new FileReader();
+
+        reader.onloadend = (evt: any) => {
+
+          this.message = evt.target.result;
+          //this.message = this.denonce.fichier;
+        }
+        reader.readAsDataURL(resFile);
+      })
     })
+  }
 
-    loading.present();
+  getfilename(filestring){
+    return filestring.replace(/^.*[\\\/]/, '');
+  }
 
-    this.file.resolveLocalFilesystemUrl(fileUri).then(
-      entry =>(<FileEntry>entry).file(file=>this.readFile(file)))
-      .catch(error=>console.error(error));
-
-    loading.dismiss();
+  goToHome(){
+    this.navCtrl.setRoot(PopoverPage);
   }
 
   soumettre(){
-    this.formulaire.append("acte",this.fGroup.controls["categorie"].value);
-    this.formulaire.append("message",this.fGroup.controls["message"].value);
-    this.formulaire.append("region",this.fGroup.controls["region"].value);
-    this.formulaire.append("departement",this.fGroup.controls["departement"].value);
-    this.formulaire.append("secteur",this.fGroup.controls["secteur"].value);
-    this.formulaire.append("periode",this.fGroup.controls["periode"].value);
-    this.formulaire.append("duree",this.fGroup.controls["duree"].value);
-    this.formulaire.append("email",this.fGroup.controls["email"].value);
-
-    //console.log(JSON.stringify(this.formDataToJSon(this.formulaire)));
-
-    this.denonceService.soumettreDenonce(JSON.stringify(this.formDataToJSon(this.formulaire))).subscribe(data=>{
-      console.log(data);
+    this.denonceService.soumettreDenonce(JSON.stringify(this.denonce)).subscribe(data=>{
+      this.resultat = data;
+      //this.navCtrl.push(SuiteDenonciationPage);
+    },error=>{
+      this.message = "Probléme de connexion !";
+      console.error(error);
     });
 
     this.initialiser();
@@ -195,11 +202,15 @@ export class DenonciationPage {
   }
 
   initialiser(){
-    this.fGroup.get("categorie").setValue("");
-    this.fGroup.get("message").setValue("");
-    this.fGroup.get("email").setValue("");
-    this.fGroup.get("region").setValue("");
-    this.fGroup.get("secteur").setValue("");
+    this.denonce.acte = "";
+    this.denonce.email = "";
+    this.denonce.secteur = "";
+    this.denonce.departement = "";
+    this.denonce.region = "";
+    this.denonce.message = "";
+    this.denonce.photo = "";
+    this.denonce.fichier = "";
+    this.photos = [];
   }
 
 }
